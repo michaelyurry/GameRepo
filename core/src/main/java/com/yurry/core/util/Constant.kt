@@ -1,4 +1,4 @@
-package com.yurry.gamerepo.util
+package com.yurry.core.util
 
 object Constant {
     const val BASE_URL = "https://api.rawg.io/api"
