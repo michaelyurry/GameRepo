@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yurry.core.data.Resource
 import com.yurry.core.ui.GameAdapter
+import com.yurry.gamerepo.MainActivity
 import com.yurry.gamerepo.R
 import com.yurry.gamerepo.databinding.FragmentHomeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -31,6 +32,9 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            (requireActivity() as MainActivity).unlockDrawer()
+            (requireActivity() as MainActivity).showActionbar(getString(R.string.title_home))
+
             val gameAdapter = GameAdapter()
             gameAdapter.onItemClick = { selectedData ->
                 val bundle = bundleOf("gameId" to selectedData.gameId)

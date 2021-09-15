@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yurry.core.ui.GameAdapter
 import com.yurry.favorite.databinding.FragmentFavoriteBinding
 import com.yurry.favorite.di.favoriteModule
+import com.yurry.gamerepo.MainActivity
 import com.yurry.gamerepo.R
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
@@ -37,7 +38,8 @@ class FavoriteGameFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-
+            (requireActivity() as MainActivity).unlockDrawer()
+            (requireActivity() as MainActivity).showActionbar(getString(R.string.title_favorite))
             val gameAdapter = GameAdapter()
             gameAdapter.onItemClick = { selectedData ->
                 val bundle = bundleOf("gameId" to selectedData.gameId)

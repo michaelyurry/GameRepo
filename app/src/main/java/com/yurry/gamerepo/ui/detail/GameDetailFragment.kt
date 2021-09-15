@@ -34,6 +34,8 @@ class GameDetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
             (requireActivity() as MainActivity).lockDrawer()
+            (requireActivity() as MainActivity).hideActionbar()
+
             val gameId: Int = arguments?.getInt("gameId", 0)!!
             gameDetailViewModel.isFavoriteGame(gameId).observe(viewLifecycleOwner, {
                 statusFavorite = it

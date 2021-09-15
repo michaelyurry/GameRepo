@@ -25,17 +25,6 @@ class MainActivity : AppCompatActivity(){
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-//        val toggle = ActionBarDrawerToggle(
-//            this,
-//            binding.drawerLayout,
-//            binding.appBarMain.toolbar,
-//            R.string.navigation_drawer_open,
-//            R.string.navigation_drawer_close
-//        )
-//
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
@@ -54,8 +43,16 @@ class MainActivity : AppCompatActivity(){
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
-
     fun unlockDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    fun hideActionbar(){
+        supportActionBar?.hide()
+    }
+
+    fun showActionbar(title: String){
+        supportActionBar?.title = title
+        supportActionBar?.show()
     }
 }
