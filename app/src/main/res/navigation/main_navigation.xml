@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_navigation">
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.yurry.gamerepo.ui.home.HomeFragment">
+        <action
+            android:id="@+id/action_nav_home_to_nav_detail"
+            app:destination="@id/nav_detail"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="com.yurry.gamerepo.ui.detail.GameDetailFragment">
+    </fragment>
+
+    <fragment
+        app:moduleName="favorite"
+        android:id="@+id/nav_favorite"
+        android:name="com.yurry.favorite.ui.FavoriteGameFragment">
+        <action
+            android:id="@+id/action_nav_favorite_to_nav_detail"
+            app:destination="@id/nav_detail"/>
+    </fragment>
 
 </navigation>

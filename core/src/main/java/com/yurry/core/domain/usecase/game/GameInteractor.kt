@@ -11,15 +11,19 @@ class GameInteractor(private val repository: GameRepository) : GameUseCase {
         return repository.getGames()
     }
 
-    override fun loadGameDetail(): Flow<Resource<GameDetail>> {
-        return repository.getGameDetail()
+    override fun loadGameDetail(gameId: Int): Flow<Resource<GameDetail>> {
+        return repository.getGameDetail(gameId)
     }
 
-    override fun saveFavoriteGame(game: Game) {
-        return repository.setFavoriteGame(game)
+    override fun setFavoriteGame(gameDetail: GameDetail, bool: Boolean) {
+        return repository.setFavoriteGame(gameDetail, bool)
     }
 
-    override fun loadFavoriteGames(): Flow<Resource<List<Game>>> {
+    override fun loadFavoriteGames(): Flow<List<Game>> {
         return repository.getFavoriteGames()
+    }
+
+    override fun isFavoriteGame(gameId: Int): Flow<Boolean> {
+        return repository.isFavoriteGame(gameId)
     }
 }

@@ -7,7 +7,7 @@ data class GameDetail(
     var description: String,
     var released: String,
     var background: String,
-    var rating: Int,
+    var rating: Float,
     var ratingTop: Int,
     var metacritic: Int
 )

@@ -11,6 +11,6 @@ interface ApiService {
     suspend fun getGameList(@Query("key") key: String): GameListResponse
 
     @GET("games/{id}")
-    suspend fun getGameDetail(@Query("key") key: String,
-                              @Path("id") id: Int): GameDetailResponse
+    suspend fun getGameDetail(@Path("id") id: Int,
+                              @Query("key") key: String): GameDetailResponse
 }

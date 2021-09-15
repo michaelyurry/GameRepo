@@ -8,7 +8,6 @@ import com.yurry.core.domain.model.GameDetail
 import com.yurry.core.domain.repository.GameRepository
 import com.yurry.core.util.AppExecutors
 import com.yurry.core.util.DataMapper
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
 class GameRepositoryImpl(
@@ -22,22 +21,43 @@ class GameRepositoryImpl(
             emit(Resource.Loading())
             val result = remoteDataSource.getAllGames().first()
             if (result is ApiResponse.Success){
-                val gameList = DataMapper.mapResponsesToDomain(result.data)
+                val gameList = DataMapper.mapGamesResponseToDomain(result.data)
                 emit(Resource.Success(gameList))
+            } else {
+                emit(Resource.Error<List<Game>>("Error"))
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
-    override fun getGameDetail(): Flow<Resource<GameDetail>> {
-        TODO("Not yet implemented")
+    override fun getGameDetail(gameId: Int): Flow<Resource<GameDetail>> {
+        return flow {
+            emit(Resource.Loading())
+            val result = remoteDataSource.getGameDetail(gameId).first()
+            if (result is ApiResponse.Success){
+                val gameDetail = DataMapper.mapGameDetailResponseToDomain(result.data)
+                emit(Resource.Success(gameDetail))
+            } else {
+                emit(Resource.Error<GameDetail>("Error"))
+            }
+        }
     }
 
-    override fun setFavoriteGame(game: Game) {
-        val gameEntity = DataMapper.mapDomainToEntity(game)
-        appExecutors.diskIO().execute { localDataSource.insertFavoriteGame(gameEntity) }
+    override fun setFavoriteGame(gameDetail: GameDetail, bool: Boolean) {
+        val gameEntity = DataMapper.mapDomainToEntity(gameDetail)
+        if (bool){
+            appExecutors.diskIO().execute { localDataSource.insertFavoriteGame(gameEntity) }
+        } else {
+            appExecutors.diskIO().execute { localDataSource.deleteFavoriteGame(gameEntity) }
+        }
     }
 
-    override fun getFavoriteGames(): Flow<Resource<List<Game>>> {
-        TODO("Not yet implemented")
+    override fun getFavoriteGames(): Flow<List<Game>> {
+        return localDataSource.getFavoriteGames().map {
+            DataMapper.mapGamesEntityToDomain(it)
+        }
+    }
+
+    override fun isFavoriteGame(gameId: Int): Flow<Boolean> {
+        return localDataSource.isFavoriteGame(gameId)
     }
 }

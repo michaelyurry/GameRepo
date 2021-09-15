@@ -10,7 +10,7 @@ data class GameResponse(
     var released: String,
     @SerializedName("background_image")
     var background: String,
-    var rating: Int,
+    var rating: Float,
     @SerializedName("rating_top")
     var ratingTop: Int,
     var metacritic: Int
@@ -29,7 +29,7 @@ data class GameDetailResponse(
     var released: String,
     @SerializedName("background_image")
     var background: String,
-    var rating: Int,
+    var rating: Float,
     @SerializedName("rating_top")
     var ratingTop: Int,
     var metacritic: Int

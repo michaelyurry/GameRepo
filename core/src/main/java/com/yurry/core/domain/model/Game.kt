@@ -6,7 +6,7 @@ data class Game(
     var name: String,
     var released: String,
     var background: String,
-    var rating: Int,
+    var rating: Float,
     var ratingTop: Int,
     var metacritic: Int
 )
