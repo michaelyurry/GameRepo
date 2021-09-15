@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import com.yurry.core.data.Resource
+import com.yurry.gamerepo.MainActivity
 import com.yurry.gamerepo.R
 import com.yurry.gamerepo.databinding.FragmentGameDetailBinding
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -32,6 +33,7 @@ class GameDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            (requireActivity() as MainActivity).lockDrawer()
             val gameId: Int = arguments?.getInt("gameId", 0)!!
             gameDetailViewModel.isFavoriteGame(gameId).observe(viewLifecycleOwner, {
                 statusFavorite = it
@@ -41,7 +43,10 @@ class GameDetailFragment: Fragment() {
             gameDetailViewModel.loadGameDetail(gameId).observe(viewLifecycleOwner, {
                 if (it != null) {
                     when (it) {
-                        is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+                        is Resource.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.fab.visibility = View.GONE
+                        }
                         is Resource.Success -> {
                             val gameDetail = it.data
                             if (gameDetail != null){
@@ -66,9 +71,11 @@ class GameDetailFragment: Fragment() {
                                     )
                                     setStatusFavorite(statusFavorite)
                                 }
+                                binding.fab.visibility = View.VISIBLE
                             }
                         }
                         is Resource.Error -> {
+                            binding.fab.visibility = View.GONE
                             binding.progressBar.visibility = View.GONE
                             binding.layoutError.root.visibility = View.VISIBLE
                             binding.layoutError.tvError.text =
