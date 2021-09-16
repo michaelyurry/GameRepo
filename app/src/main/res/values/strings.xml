@@ -4,4 +4,6 @@
     <string name="title_favorite">Favorite</string>
     <string name="title_home">Home</string>
     <string name="no_data">Empty data</string>
+    <string name="save_success">Game disimpan sebagai favorit</string>
+    <string name="delete_success">Game dihapus sebagai favorit</string>
 </resources>
