@@ -18,8 +18,6 @@ class RemoteDataSource(private val apiService: ApiService) {
             try {
                 val response = apiService.getGameList(Constant.API_KEY)
                 val dataArray = response.results
-                Log.d("YURRY", "getAllGames:" + response.toString())
-                Log.d("YURRY", "getAllGames:" + dataArray.toString())
                 if (dataArray.isNotEmpty()){
                     emit(ApiResponse.Success(response.results))
                 } else {
