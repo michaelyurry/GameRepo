@@ -12,7 +12,7 @@ interface FavoriteGameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavoriteGame(game: FavoriteGameEntity)
 
-    @Delete()
+    @Delete
     fun deleteFavoriteGame(game: FavoriteGameEntity)
 
     @Query("SELECT EXISTS(SELECT * FROM favorite_games WHERE gameId = :id)")
