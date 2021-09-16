@@ -9,6 +9,9 @@ import com.yurry.core.data.remote.network.ApiService
 import com.yurry.core.domain.repository.GameRepository
 import com.yurry.core.util.AppExecutors
 import com.yurry.core.util.Constant
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -20,19 +23,29 @@ import java.util.concurrent.TimeUnit
 val databaseModule = module {
     factory { get<FavoriteGameDatabase>().gameDao() }
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("yurry".toCharArray())
+        val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
-            FavoriteGameDatabase::class.java, "Game.db"
-        ).fallbackToDestructiveMigration().build()
+            FavoriteGameDatabase::class.java, "Game.db")
+            .fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
     }
 }
 
 val networkModule = module {
     single {
+        val hostname = "api.rawg.io"
+        val certificatePinner = CertificatePinner.Builder()
+            .add(hostname, "sha256/+WSYXXW0rd5TnILDGuJvshU5aExcOMlLxvQBPOT4PS0=")
+            .add(hostname, "sha256/RI9CUmPUOpUk2vdVMSZDWj+wtoQO5k9MSCSM9w4grmU=")
+            .build()
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
+            .certificatePinner(certificatePinner)
             .build()
     }
     single {
