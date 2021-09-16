@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 val databaseModule = module {
     factory { get<FavoriteGameDatabase>().gameDao() }
     single {
-        val passphrase: ByteArray = SQLiteDatabase.getBytes("yurry".toCharArray())
+        val passphrase: ByteArray = SQLiteDatabase.getBytes(Constant.DB_BYTE_KEY.toCharArray())
         val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
@@ -36,10 +36,10 @@ val databaseModule = module {
 
 val networkModule = module {
     single {
-        val hostname = "api.rawg.io"
+        val hostname = Constant.HOSTNAME
         val certificatePinner = CertificatePinner.Builder()
-            .add(hostname, "sha256/+WSYXXW0rd5TnILDGuJvshU5aExcOMlLxvQBPOT4PS0=")
-            .add(hostname, "sha256/RI9CUmPUOpUk2vdVMSZDWj+wtoQO5k9MSCSM9w4grmU=")
+            .add(hostname, Constant.CERT_1)
+            .add(hostname, Constant.CERT_2)
             .build()
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
